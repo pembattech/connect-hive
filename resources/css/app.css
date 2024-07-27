@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.search-svg {
+    top: 35%;
+}
+
+body {
+    background-color: red;
+}
