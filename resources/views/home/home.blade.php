@@ -1,10 +1,9 @@
-<x-layout>
+<x-app-layout>
 
     <section class="home-wrapper">
-        <h1>Home</h1>
 
         {{-- story  --}}
-        <div class="flex gap-4" style="overflow: auto;">
+        <div class="flex gap-4 p-4" style="overflow: auto;">
             <div class="relative">
 
                 <img class="story-pp-img object-cover rounded-full" src="{{ asset('images/profile-images/profile.jpg') }}"
@@ -91,20 +90,24 @@
 
                         </div>
 
-                        <div class="post-option-btns p-2 flex justify-between">
-                            <div class="flex gap-2">
-                                <img class="three-dot object-cover" src="{{ asset('images/more.png') }}"
-                                    alt="more">
-                                <img class="three-dot object-cover" src="{{ asset('images/more.png') }}"
-                                    alt="more">
-                                <img class="three-dot object-cover" src="{{ asset('images/more.png') }}"
-                                    alt="more">
+                        <div class="post-option-btns p-2 flex justify-between items-center">
+
+                            <div class="flex gap-4">
+                                <div class="post-opt-hover">
+                                    <img class="post-option-btn-img object-cover"
+                                        src="{{ asset('images/thumbs-up_2186301.png') }}" alt="thumb">
+                                </div>
+                                <div class="post-opt-hover">
+                                    <img class="post-option-btn-img object-cover"
+                                        src="{{ asset('images/chatting_2186364.png') }}" alt="comment">
+                                </div>
                             </div>
 
-                            <div>
-                                <img class="three-dot object-cover" src="{{ asset('images/more.png') }}"
-                                    alt="more">
+                            <div class="post-opt-hover">
+                                <img class="post-option-btn-img object-cover"
+                                    src="{{ asset('images/share_2186322.png') }}" alt="share">
                             </div>
+
                         </div>
 
                         <p>
@@ -132,7 +135,7 @@
                                     src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
                             </div>
 
-                            <p class="absolute" style="left: 45px;">
+                            <p class="mb-2 text-sm" style="margin-left: 20px;">
                                 liked by <strong>@username</strong> and <strong>others</strong>
                             </p>
                         </div>
@@ -141,7 +144,17 @@
                         <div class="post-caption">
 
                             <p><strong>@username</strong> <span id="caption">Confidence in every click 📸</span></p>
-                            
+
+                        </div>
+
+                        <div class="post-comment">
+                            <p class="view-post-comment text-sm text-gray-700">
+                                View all 11 comment
+                            </p>
+
+                            <input type="text" class="add-comment w-full text-sm text-gray-700"
+                                placeholder="Add a comment...">
+
                         </div>
 
                     </div>
@@ -152,6 +165,53 @@
 
         </div>
 
+    </section>
+
+    <section class="right-wrapper position-sticky">
+        <div class="profile-box p-4">
+
+            <div class="flex gap-2 items-center justify-between">
+                <div class="hover:bg-gray-100 rounded-lg p-2 flex gap-2 items-center">
+
+                    <img class="user-small-pp-img object-cover rounded-full"
+                        src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
+
+                    <div>
+                        <p class="username"><strong>pembatitung</strong></p>
+                        <p class="fullname">Pemba Tamang</p>
+                    </div>
+
+                </div>
+
+                <div>
+                    <a href="#" class="text-sm text-blue hover-underline">Logout</a>
+                </div>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        
+        <h1 class="p-4 font-semibold text-gray-900 text-xl">Contacts</h1>
+
+        <div class="friends">
+        
+            <div class="flex gap-2 items-center p-2 rounded-lg hover:bg-gray-100">
+                <img class="friend-small-pp-img object-cover rounded-full"
+                    src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
+                <p class="post-title">Pemba Tamang</p>
+            </div>
+
+            <div class="flex gap-2 items-center p-2 rounded-lg hover:bg-gray-100">
+                <img class="friend-small-pp-img object-cover rounded-full"
+                    src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
+                <p class="post-title">Pemba Tamang</p>
+            </div>
+
+
+        </div>
 
     </section>
-</x-layout>
+</x-app-layout>

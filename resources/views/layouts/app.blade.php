@@ -28,8 +28,11 @@
             @endisset
 
             <!-- Page Content -->
-            <main>
+            <main class="grid gap-10" style="grid-template-columns: 1fr 2fr 1fr;">
+                @include('layouts.sidebar')
+        
                 {{ $slot }}
+        
             </main>
         </div>
     </body>

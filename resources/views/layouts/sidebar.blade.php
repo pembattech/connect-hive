@@ -1,4 +1,4 @@
-<aside class="bg-white border-b border-gray-100 dark:border-gray-700">
+<aside class="sidebar-wrapper bg-white border-b border-gray-100 dark:border-gray-700">
 
   <div class="flex items-center justify-between">
 
@@ -35,13 +35,13 @@
     <a href="#" class="text-sm text-blue hover-underline">See all</a>
   </div>
     <div class="flex flex-col">
-      <div class="flex gap-2 items-center group p-4 hover:bg-gray-100">
+      <div class="flex gap-2 items-center group rounded-lg p-2 hover:bg-gray-100">
       <img class="group-pp-img object-cover rounded opacity-75" src="{{ asset('images/group-images/group_img.jpg') }}" alt="setting">
         Group 1</div>
-      <div class="flex gap-2 items-center group p-4 hover:bg-gray-100">
+      <div class="flex gap-2 items-center group p-2 rounded-lg hover:bg-gray-100">
       <img class="group-pp-img object-cover rounded opacity-75" src="{{ asset('images/group-images/group_img.jpg') }}" alt="setting">
         Group 2</div>
-      <div class="flex gap-2 items-center group p-4 hover:bg-gray-100">
+      <div class="flex gap-2 items-center group p-2 rounded-lg hover:bg-gray-100">
       <img class="group-pp-img object-cover rounded opacity-75" src="{{ asset('images/group-images/group_img.jpg') }}" alt="setting">
         Group 3</div>
     </div>
