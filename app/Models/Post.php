@@ -10,9 +10,11 @@ class Post extends Model
 
     protected $primaryKey = 'PostID';
 
-    protected $fillable = [
-        'UserID', 'Content', 'ImageURL', 'VideoURL',
-    ];
+    protected $guarded = [];
+
+    // protected $fillable = [
+    //     'UserID', 'Content', 'ImageURL', 'VideoURL',
+    // ];
 
     public function user()
     {

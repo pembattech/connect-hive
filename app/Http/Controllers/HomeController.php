@@ -4,12 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Post;
+
 class HomeController extends Controller
 {
     public function index()
     {
-        $content = ["This is home page!"];
+        $posts = Post::query()->where('UserID', request()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate();
 
-        return view('home.home', ['content' => $content]);
+        return view('home.home', ['posts' => $posts]);
     }
 }
