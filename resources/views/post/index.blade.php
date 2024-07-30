@@ -13,7 +13,7 @@
                         <div class="flex gap-2 items-center">
                             <img class="user-small-pp-img object-cover rounded-full"
                                 src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                            <p class="post-user">{{ $post['user']['name'] }}</p>
+                            <p class="post-user"><strong>{{ $post['user']['name'] }}</strong></p>
                         </div>
 
                         <div>
