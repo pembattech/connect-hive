@@ -3,50 +3,59 @@
         <div class="post-section mt-6">
             <div class="post mb-6">
 
-                <div class="relative">
+                <div class="post-top-bar p-2 top-0 w-full text-black items-center">
 
-                    <img class="post-image object-cover" src="{{ asset('images/profile-images/profile.jpg') }}"
-                        alt="post">
-
-                    <div class="post-top-bar p-2 top-0 w-full absolute text-white items-center">
-
-                        <div class="flex gap-2 items-center">
-                            <img class="user-small-pp-img object-cover rounded-full"
-                                src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                            <p class="post-user"><strong>{{ $post['user']['name'] }}</strong></p>
-                        </div>
-
-                        <div>
-                            <img class="three-dot object-cover" src="{{ asset('images/more.png') }}" alt="more">
-                        </div>
-
+                    <div class="flex gap-2 items-center">
+                        <img class="user-small-pp-img object-cover rounded-full"
+                            src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
+                        <p class="post-user"><strong>{{ $post['user']['name'] }}</strong></p>
                     </div>
 
-                    <div class="post-option-btns p-2 flex justify-between items-center">
-
-                        <div class="flex gap-4">
-                            <div class="post-opt-hover">
-                                <img class="post-option-btn-img object-cover"
-                                    src="{{ asset('images/thumbs-up_2186301.png') }}" alt="thumb">
-                            </div>
-                            <div class="post-opt-hover">
-                                <img class="post-option-btn-img object-cover"
-                                    src="{{ asset('images/chatting_2186364.png') }}" alt="comment">
-                            </div>
-                        </div>
-
-                        <div class="post-opt-hover">
-                            <img class="post-option-btn-img object-cover" src="{{ asset('images/share_2186322.png') }}"
-                                alt="share">
-                        </div>
-
+                    <div>
+                        <img class="three-dot object-cover" src="{{ asset('images/more.png') }}" alt="more">
                     </div>
-
-                    <p>
-                        if liked gareko mancha friend cha vaney otherwise display `1000 likes`
-                    </p>
 
                 </div>
+
+                @if ($post['ImageURL'])
+                    <div class="post-img-wrapper">
+
+                        <div class="post-caption">
+                            <p id="caption">{{ $post['Content'] }}</p>
+                        </div>
+
+                        <img class="post-image object-cover w-full"
+                            src="{{ asset('post_images/' . $post['ImageURL']) }}" alt="post">
+                    </div>
+                @else
+                    <div class="post-caption">
+                        <p id="caption">{{ $post['Content'] }}</p>
+                    </div>
+                @endif
+
+                <div class="post-option-btns p-2 flex justify-between items-center">
+
+                    <div class="flex gap-4">
+                        <div class="post-opt-hover">
+                            <img class="post-option-btn-img object-cover"
+                                src="{{ asset('images/thumbs-up_2186301.png') }}" alt="thumb">
+                        </div>
+                        <div class="post-opt-hover">
+                            <img class="post-option-btn-img object-cover"
+                                src="{{ asset('images/chatting_2186364.png') }}" alt="comment">
+                        </div>
+                    </div>
+
+                    <div class="post-opt-hover">
+                        <img class="post-option-btn-img object-cover" src="{{ asset('images/share_2186322.png') }}"
+                            alt="share">
+                    </div>
+
+                </div>
+
+                <p>
+                    if liked gareko mancha friend cha vaney otherwise display `1000 likes`
+                </p>
 
                 <div class="post-bottom">
 
@@ -70,14 +79,6 @@
                         <p class="mb-2 text-sm" style="margin-left: 20px;">
                             liked by <strong>@username</strong> and <strong>others</strong>
                         </p>
-                    </div>
-
-
-                    <div class="post-caption">
-
-                        <p><strong>{{ $post['user']['name'] }}</strong> <span id="caption">{{ $post['Content'] }}</span>
-                        </p>
-
                     </div>
 
                     <div class="post-comment">

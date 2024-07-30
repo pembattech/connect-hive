@@ -19,7 +19,7 @@
 
         </div>
 
-        <div class="flex">
+        <div class="post-img-btn" id="post-img-btn">
 
             <img class="other-asset-img" src="{{ asset('images/picture.png') }}" alt="upload picture">
 

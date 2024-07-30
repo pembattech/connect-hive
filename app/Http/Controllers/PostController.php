@@ -35,17 +35,23 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'content' => ['required', 'string']
+            'content' => ['required', 'string'],
+            'imageurl' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ]);
 
+        if ($request->hasFile('image')) {
+            $imageName = time() . '.' . $request->image->extension();
+            $request->image->move(public_path('post_images'), $imageName);
+            $data['ImageURL'] = $imageName;
+        }
 
         $data['UserID'] = $request->user()->id;
 
         $post = Post::create($data);
 
         return to_route('post.index');
-
     }
+
 
     /**
      * Display the specified resource.

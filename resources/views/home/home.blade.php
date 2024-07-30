@@ -60,11 +60,13 @@
 
                 {{-- upload post --}}
                 @include('post.create')
-                
+
+                @include('post.post_img')
+
                 {{-- posts --}}
                 @include('post.index')
-                
-                
+
+
 
             </div>
 
@@ -129,4 +131,20 @@
         </section>
 
     </div>
+
+    <script>
+        const showPopup_post_img = document.getElementById('post-img-btn');
+        const hiddenDiv = document.getElementById('post-img');
+
+        showPopup_post_img.addEventListener('click', () => {
+            hiddenDiv.style.display = 'block';
+
+        });
+
+        const hidePopup = document.getElementById('cancel-button');
+        hidePopup.addEventListener('click', () => {
+            hiddenDiv.style.display = 'none';
+        });
+    </script>
+
 </x-app-layout>
