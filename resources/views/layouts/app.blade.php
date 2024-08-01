@@ -36,6 +36,12 @@
     {{-- @include('layouts.sidebar') --}}
 
 
+    @session('message')
+        <div class="success-message" style="z-index: 99999;">
+            {{ session('message') }}
+        </div>
+    @endsession
+
     <div>
 
         {{ $slot }}

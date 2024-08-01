@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Like;
+
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -12,13 +14,20 @@ class PostController extends Controller
      */
     public function index()
     {
-        // return 'Hello this is post index file.';
+        $userId = request()->user()->id;
 
         $posts = Post::query()->where('UserID', request()->user()->id)
             ->orderBy('created_at', 'desc')
             ->paginate();
 
-        return view('post.index', ['posts' => $posts]);
+        // Fetch the IDs of liked posts for the authenticated user
+        $likedPosts = Like::where('UserID', $userId)->pluck('PostID')->toArray();
+
+        // Pass the posts and liked posts to the view
+        return view('post.index', [
+            'posts' => $posts,
+            'likedPosts' => $likedPosts,
+        ]);
     }
 
     /**

@@ -33,7 +33,7 @@
                     </div>
                 </a>
 
-                <a href="#">
+                <a href="{{ route('message.index') }}">
                     <div class="text-xl rounded-lg p-4 hover:bg-gray-100 cursor-pointer">
                         <p>Message</p>
                     </div>

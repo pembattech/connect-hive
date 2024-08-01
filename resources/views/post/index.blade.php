@@ -1,4 +1,7 @@
 <x-app-layout>
+
+    {{-- <pre>{{ var_export($likedPosts, true) }}</pre> --}}
+
     @foreach ($posts as $post)
         <div class="post-section mt-6">
             <div class="post mb-6">
@@ -36,10 +39,9 @@
                 <div class="post-option-btns p-2 flex justify-between items-center">
 
                     <div class="flex gap-4">
-                        <div class="post-opt-hover">
-                            <img class="post-option-btn-img object-cover"
-                                src="{{ asset('images/thumbs-up_2186301.png') }}" alt="thumb">
-                        </div>
+
+                        @include('like.like_create')
+
                         <div class="post-opt-hover">
                             <img class="post-option-btn-img object-cover"
                                 src="{{ asset('images/chatting_2186364.png') }}" alt="comment">
@@ -52,6 +54,12 @@
                     </div>
 
                 </div>
+
+                @if (in_array($post['PostID'], $likedPosts))
+                    <span>Liked</span>
+                @else
+                    <span>Not Liked</span>
+                @endif
 
                 <p>
                     if liked gareko mancha friend cha vaney otherwise display `1000 likes`
