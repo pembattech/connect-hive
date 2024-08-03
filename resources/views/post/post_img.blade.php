@@ -2,7 +2,7 @@
 
 
 
-    <div class="post-img" id = "post-img">
+    <div class="popup-modal" id = "popup-modal">
 
         <div class="popup-content bg-white border rounded-lg">
 

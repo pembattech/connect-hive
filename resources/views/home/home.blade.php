@@ -149,7 +149,7 @@
 
 
                 <h1 class="font-semibold text-gray-900 text-xl" style="padding-bottom: 1rem;">Contacts</h1>
-                
+
                 <div class="friends">
 
 
@@ -240,7 +240,7 @@
 
     <script>
         const showPopup_post_img = document.getElementById('post-img-btn');
-        const hiddenDiv = document.getElementById('post-img');
+        const hiddenDiv = document.getElementById('popup-modal');
 
         showPopup_post_img.addEventListener('click', () => {
             hiddenDiv.style.display = 'block';

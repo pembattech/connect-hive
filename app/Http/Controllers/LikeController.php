@@ -44,9 +44,6 @@ class LikeController extends Controller
             ->where('UserID', $data['UserID'])
             ->first();
 
-        // Debugging: Uncomment this if needed
-        // dd($existingLike);
-
         if (!$existingLike) {
             // If no existing like is found, create a new like record
             Like::create($data);
@@ -54,7 +51,8 @@ class LikeController extends Controller
             // Redirect back with a success message
             return redirect()->back()->with('success', 'Post liked successfully!');
         } else {
-            // If an existing like is found, redirect back with an informational message
+            $existingLike->delete();
+            
             return redirect()->back()->with('info', 'You have already liked this post.');
         }
     }

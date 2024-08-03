@@ -67,7 +67,13 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        // Return JSON data for AJAX request
+        if (request()->ajax()) {
+            return response()->json($post);
+        }
+
+        // Otherwise, return a view (not necessary for AJAX)
+        // return view('post.post_show', ['post' => $post]);
     }
 
     /**
