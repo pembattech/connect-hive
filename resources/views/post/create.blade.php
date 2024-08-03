@@ -1,4 +1,3 @@
-<x-app-layout>
     <div class="create-post flex gap-4 mt-4 mb-4 justify-between">
         <div class="w-full">
 
@@ -45,4 +44,3 @@
 
 
 
-</x-app-layout>

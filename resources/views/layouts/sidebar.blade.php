@@ -1,4 +1,3 @@
-{{-- <section class="sidebar-wrapper p-4 fixed bg-white"> --}}
 <section class="sidebar-wrapper position-sticky top-0 bg-white">
 
     <div class="grid min-h-[100dvh] grid-rows-[auto_1fr_auto] p-4">

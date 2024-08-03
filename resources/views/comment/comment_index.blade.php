@@ -1,4 +1,4 @@
-<x-app-layout>
+
     <div class="popup-modal" id = "comment-popup">
 
         <div class="popup-content bg-white border rounded-lg">
@@ -39,4 +39,3 @@
         });
     </script> --}}
 
-</x-app-layout>

@@ -1,4 +1,3 @@
-<x-app-layout>
     @foreach ($posts as $post)
         <div class="post-section mt-6">
             <div class="post mb-6">
@@ -102,7 +101,6 @@
                             View all 11 comment
                         </p>
 
-                        {{-- @include('comment.comment_index') --}}
                     </div>
 
                 </div>
@@ -173,5 +171,3 @@
             });
         });
     </script>
-
-</x-app-layout>
