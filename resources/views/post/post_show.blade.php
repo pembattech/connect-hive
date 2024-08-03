@@ -1,7 +1,4 @@
 <x-app-layout>
-    <style>
-
-    </style>
 
     <div class="popup-modal" id = "post-popup">
 
@@ -27,7 +24,8 @@
 
                         <div class="popup-post-body">
 
-                            @if ($post['ImageURL'])
+                            {{-- AUTO GENERATE BY AJAX --}}
+                            {{-- @if ($post['ImageURL'])
                                 <div class="post-img-wrapper">
 
                                     <div class="post-caption">
@@ -41,7 +39,7 @@
                                 <div class="post-caption">
                                     <p id="caption"></p>
                                 </div>
-                            @endif
+                            @endif --}}
 
                         </div>
 
@@ -52,7 +50,7 @@
                                 <div class="flex gap-2 items-center">
                                     <img class="user-small-pp-img object-cover rounded-full"
                                         src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                                    <p><strong class="post-user"></strong> • <span id="created_at"></span></p>
+                                    <p><strong class="post-user-popup"></strong> • <span id="created_at_popup"></span></p>
                                 </div>
 
                                 <div>

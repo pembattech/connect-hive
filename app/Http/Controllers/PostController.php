@@ -16,8 +16,11 @@ class PostController extends Controller
     {
         $userId = request()->user()->id;
 
-        $posts = Post::query()->where('UserID', request()->user()->id)
-            ->orderBy('created_at', 'desc')
+        // $posts = Post::query()->where('UserID', request()->user()->id)
+        //     ->orderBy('created_at', 'desc')
+        //     ->paginate();
+
+        $posts = Post::query()->orderBy('created_at', 'desc')
             ->paginate();
 
         // Fetch the IDs of liked posts for the authenticated user
@@ -58,7 +61,7 @@ class PostController extends Controller
 
         $post = Post::create($data);
 
-        return to_route('post.index');
+        return to_route('dashboard');
     }
 
 
@@ -69,10 +72,15 @@ class PostController extends Controller
     {
         // Return JSON data for AJAX request
         if (request()->ajax()) {
+
+            $post['user_name'] = $post->user['name'];
+
+            // Unset the user relationship to avoid including it in the JSON response
+            unset($post['user']);
+
             return response()->json($post);
         }
 
-        // Otherwise, return a view (not necessary for AJAX)
         // return view('post.post_show', ['post' => $post]);
     }
 

@@ -133,10 +133,11 @@
                     dataType: 'json',
                     success: function(data) {
 
+                        console.log(data);
                         $popupForm.show();
 
-                        $(".post-user").text(`${data.UserID}`);
-                        $("#created_at").text(`${data.created_at}`);
+                        $(".post-user-popup").text(`${data.user_name}`);
+                        $("#created_at_popup").text(`${data.created_at}`);
                         $("#postid").text(`${data.PostID}`);
 
 

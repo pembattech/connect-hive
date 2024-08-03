@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware('auth')->group(function (){
+Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
     Route::resource('post', PostController::class);
@@ -18,7 +18,6 @@ Route::middleware('auth')->group(function (){
     Route::resource('like', LikeController::class);
 
     Route::resource('message', MessageController::class);
-
 });
 
 
@@ -29,4 +28,4 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

@@ -2,8 +2,7 @@
     <form action="{{ route('like.store') }}" method="post">
         @csrf
 
-        <input type="hidden" name="PostID" value="{{ $post->PostID }}">
-
+        <input type="hidden" name="PostID" value= "{{ $post['PostID'] }}">
         <div class="post-opt-hover">
             @if (in_array($post['PostID'], $likedPosts))
                 <button type="submit" class="post-option-btn-img object-cover">

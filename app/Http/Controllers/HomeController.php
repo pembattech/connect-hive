@@ -13,7 +13,7 @@ class HomeController extends Controller
     {
         $userId = request()->user()->id;
 
-        $posts = Post::query()->where('UserID', request()->user()->id)
+        $posts = Post::query()
             ->orderBy('created_at', 'desc')
             ->paginate();
 
