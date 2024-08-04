@@ -81,7 +81,7 @@ class PostController extends Controller
             return response()->json($post);
         }
 
-        // return view('post.post_show', ['post' => $post]);
+        return view('post.post_show', ['post' => $post]);
     }
 
     /**
@@ -106,5 +106,22 @@ class PostController extends Controller
     public function destroy(Post $post)
     {
         //
+    }
+
+    public function getComments(Post $post)
+    {
+        $comments = $post->comments()->with('user')->get()->map(function ($comment) {
+            return [
+                'CommentID' => $comment->CommentID,
+                'PostID' => $comment->PostID,
+                'UserID' => $comment->UserID,
+                'Content' => $comment->Content,
+                'created_at' => $comment->created_at,
+                'updated_at' => $comment->updated_at,
+                'user_name' => $comment->user->name,
+            ];
+        });
+
+        return response()->json($comments);
     }
 }

@@ -20,7 +20,7 @@
 
         <div class="post-img-btn" id="post-img-btn">
 
-            <img class="other-asset-img" src="{{ asset('images/picture.png') }}" alt="upload picture">
+            <img class="other-asset-img" src="{{ asset('images/assets/picture.png') }}" alt="upload picture">
 
         </div>
 

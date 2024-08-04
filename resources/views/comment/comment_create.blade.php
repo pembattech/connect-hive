@@ -3,14 +3,15 @@
 
     <input type="hidden" id="postid" name="PostID" value="">
 
-    <textarea name="commentContent" id="commentInput" class="px-4 pl-10 mt-2 mb-2 text-gray-700 border-0" cols="30" rows="1"
-        placeholder="Add a comment..."></textarea>
+    <div class="comment-inputbox flex gap-2 rounded-lg">
 
-    <button class="post-submit-button mt-2 mb-2 alice-blue text-blue font-sm text-lg p-2 rounded-lg"
-        id="commentSubmit">Submit</button>
-    {{-- 
-    <button class="cancel-button w-full mt-2 mb-2 text-white font-sm text-lg p-2 rounded-lg"
-        id="cancel-button">Cancel</button> --}}
+        <textarea name="commentContent" id="commentInput" class="px-4 pl-10 mt-2 mb-2 text-gray-700 border-0" cols="30"
+            rows="1" placeholder="Add a comment..."></textarea>
+
+        <button class="alice-blue text-blue font-sm text-lg p-2 rounded-lg" id="commentSubmit">Submit</button>
+
+    </div>
+
 </form>
 
 <script>
@@ -19,9 +20,9 @@
 
     commentInput.addEventListener('input', function() {
         if (commentInput.value.trim().length > 0) {
-            commentSubmit.style.display = 'block';
+            commentSubmit.classList.add('show');
         } else {
-            commentSubmit.style.display = 'none';
+            commentSubmit.classList.remove('show');
         }
     });
 </script>

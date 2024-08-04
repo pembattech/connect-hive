@@ -12,7 +12,9 @@ class CommentController extends Controller
      */
     public function index()
     {
-        //
+        $comment = Comment::query()->where('UserID', request()->user()->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate();
     }
 
     /**

@@ -14,6 +14,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
+    Route::get('/post/{post}/comments', [PostController::class, 'getComments']);
+
     Route::resource('post', PostController::class);
 
     Route::resource('like', LikeController::class);
