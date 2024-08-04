@@ -3,12 +3,12 @@
 
     <input type="hidden" id="postid" name="PostID" value="">
 
-    <div class="comment-inputbox flex gap-2 rounded-lg">
+    <div class="comment-inputbox flex gap-2 rounded-lg mt-2 mb-2">
 
-        <textarea name="commentContent" id="commentInput" class="px-4 pl-10 mt-2 mb-2 text-gray-700 border-0" cols="30"
+        <textarea name="commentContent" id="commentInput" class="px-4 pl-10 text-gray-700 border-0" cols="30"
             rows="1" placeholder="Add a comment..."></textarea>
 
-        <button class="alice-blue text-blue font-sm text-lg p-2 rounded-lg" id="commentSubmit">Submit</button>
+        <button class="alice-blue text-blue font-sm text-lg p-2" id="commentSubmit">Submit</button>
 
     </div>
 

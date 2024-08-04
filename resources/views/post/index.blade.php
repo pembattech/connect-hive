@@ -43,16 +43,15 @@
 
                 <div class="post-option-btns p-2 flex justify-between items-center">
 
-                    <div class="flex gap-4 items-center">
+                    <div class="flex gap-2 items-center">
 
                         @include('like.like_create')
 
 
-                        <div class="post-opt-hover">
+                        <div class="post-opt-hover commentInput-btn" data-post-id="{{ $post['PostID'] }}">
 
-                            <svg class="asset-btn-svg" data-post-id="{{ $post['PostID'] }}"
-                                xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                                width="24px" fill="#e8eaed">
+                            <svg class="asset-btn-svg commentInput-svg" xmlns="http://www.w3.org/2000/svg"
+                                height="24px" viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                                 <path
                                     d="M240-400h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-240v-640h800v800L720-240H80Zm80-80h594l46 45v-525H160v480Zm0 0v-480 480Z" />
                             </svg>
@@ -99,7 +98,7 @@
                         </p>
                     </div>
 
-                    <div class="post-comment">
+                    <div class="post-comment" data-post-id="{{ $post['PostID'] }}">
                         <p class="view-post-comment text-sm text-gray-700">
                             View all 11 comment
                         </p>
@@ -128,6 +127,35 @@
             $post_bodyElements.on('click', function() {
                 const postId = $(this).data('post-id');
 
+                post_preview_ajax(postId);
+
+            });
+
+            
+            const $commentInput_btnElements = $('.commentInput-btn');
+
+            $commentInput_btnElements.on('click', function() {
+                const postId = $(this).data('post-id');
+
+                post_preview_ajax(postId);
+
+            });
+
+            const $post_commentElements = $('.post-comment');
+
+            $post_commentElements.on('click', function() {
+                const postId = $(this).data('post-id');
+
+                post_preview_ajax(postId);
+
+            });
+
+
+            $('#cancelButton').on('click', function() {
+                $popupForm.hide();
+            });
+
+            function post_preview_ajax(postId) {
                 $.ajax({
                     url: `/post/${postId}`,
                     method: 'GET',
@@ -173,12 +201,7 @@
                         console.log('Error fetching post:', textStatus, errorThrown);
                     }
                 });
-            });
-
-
-            $('#cancelButton').on('click', function() {
-                $popupForm.hide();
-            });
+            }
 
             function fetchComments(postId) {
                 $.ajax({
