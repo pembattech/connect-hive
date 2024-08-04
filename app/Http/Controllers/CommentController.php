@@ -20,7 +20,7 @@ class CommentController extends Controller
      */
     public function create()
     {
-        //
+        return view('comment.comment_create');
     }
 
     /**
@@ -28,8 +28,23 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        dd($request);
+
+        $data = $request->validate([
+            'PostID' => ['required', 'integer'],
+            'commentContent' => ['required', 'string']
+        ]);
+
+
+        $data['UserID'] = $request->user()->id;
+
+        // Create a new comment using the validated data
+        $comment = Comment::create([
+            'PostID' => $data['PostID'],
+            'UserID' => $data['UserID'],
+            'Content' => $data['commentContent']
+        ]);
+
+        return to_route('dashboard');
     }
 
     /**

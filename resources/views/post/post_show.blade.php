@@ -16,7 +16,7 @@
 
             <div class="post mb-6">
 
-                <div style="display: none;" id="postid"></div>
+                {{-- <div style="display: none;" id="postid"></div> --}}
 
                 <div class="gap-4 justify-center" style="display: grid; grid-template-columns: 1fr 1fr;">
 
@@ -126,7 +126,7 @@
                             </div>
 
                         </div>
-                        @include('comment.comment_index')
+                        @include('comment.comment_create')
 
                     </div>
 

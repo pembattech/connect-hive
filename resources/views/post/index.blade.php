@@ -136,7 +136,7 @@
 
                         $(".post-user-popup").text(`${data.user_name}`);
                         $("#created_at_popup").text(`${data.created_at}`);
-                        $("#postid").text(`${data.PostID}`);
+                        $("#postid").val(`${data.PostID}`);
 
 
                         const popup_post_body = $('.popup-post-body');

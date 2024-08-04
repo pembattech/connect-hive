@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
@@ -16,6 +17,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('post', PostController::class);
 
     Route::resource('like', LikeController::class);
+
+    Route::resource('comment', CommentController::class);
 
     Route::resource('message', MessageController::class);
 });
