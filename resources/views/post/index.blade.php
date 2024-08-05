@@ -131,7 +131,7 @@
 
             });
 
-            
+
             const $commentInput_btnElements = $('.commentInput-btn');
 
             $commentInput_btnElements.on('click', function() {
@@ -161,8 +161,6 @@
                     method: 'GET',
                     dataType: 'json',
                     success: function(data) {
-
-                        console.log(data);
 
                         $popupForm.show();
 
@@ -213,6 +211,7 @@
                         commentsSection.empty();
 
                         comments.forEach(comment => {
+                            console.log(comment);
                             commentsSection.append(`
                         <div class="comment flex gap-2 p-2">
                              <div>
@@ -223,6 +222,7 @@
                             <div>
                                 <p><strong>${comment.user_name}:</strong> ${comment.Content}</p>
                                 <p><small>${formatDate(new Date(comment.created_at))}</small></p>
+                                <button class="comment-replyBtn text-sm text-blue hover-underline" data-comment-id=${comment.CommentID}>Reply</button>
                             </div>
                         </div>
                     `);
@@ -235,5 +235,19 @@
                     }
                 });
             }
+
+            $(document).on('click', '.comment-replyBtn', function() {
+                const commentId = $(this).data('comment-id');
+                // const postId = $($post_commentElements).data('post-id');
+
+                console.log(commentId);
+
+                // $("#postid").val(postId);
+                $("#commentid").val(commentId);
+
+
+            });
+
+
         });
     </script>

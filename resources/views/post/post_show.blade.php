@@ -4,15 +4,15 @@
 
         <div id="cancelButton" class="absolute">
 
-            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960"
-                width="24px" fill="#e9e9e9">
+            <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#e9e9e9">
                 <path
                     d="m256-200-56-56 224-224-224-224 56-56 224 224 224-224 56 56-224 224 224 224-56 56-224-224-224 224Z" />
             </svg>
 
         </div>
 
-        <div class="post-preview relative rounded-lg bg-white grid grid-cols-2 gap-4 justify-center" style="height: 100%;">
+        <div class="post-preview relative rounded-lg bg-white grid grid-cols-2 gap-4 justify-center"
+            style="height: 100%;">
 
 
             <div class="popup-post-body">
@@ -53,11 +53,11 @@
                 </div>
 
 
-                <div class="post-comment" style="overflow: auto;">
+                <div class="comments-section text-sm" style="overflow: auto;">
 
-                    <div class="comments-section text-sm"></div>
-
+                    {{-- Auto Generate by FetchComment Func --}}
                 </div>
+
 
                 <div class="post-bottom">
 
@@ -101,8 +101,8 @@
                     </div>
 
 
-                        @include('comment.comment_create')
-                        
+                    @include('comment.comment_create')
+
                 </div>
 
 

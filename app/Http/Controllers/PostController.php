@@ -110,17 +110,23 @@ class PostController extends Controller
 
     public function getComments(Post $post)
     {
-        $comments = $post->comments()->with('user')->get()->map(function ($comment) {
-            return [
-                'CommentID' => $comment->CommentID,
-                'PostID' => $comment->PostID,
-                'UserID' => $comment->UserID,
-                'Content' => $comment->Content,
-                'created_at' => $comment->created_at,
-                'updated_at' => $comment->updated_at,
-                'user_name' => $comment->user->name,
-            ];
-        });
+        // $comments = $post->comments()->with('user')->get()->map(function ($comment) {
+        //     return [
+        //         'CommentID' => $comment->CommentID,
+        //         'PostID' => $comment->PostID,
+        //         'UserID' => $comment->UserID,
+        //         'Content' => $comment->Content,
+        //         'created_at' => $comment->created_at,
+        //         'updated_at' => $comment->updated_at,
+        //         'user_name' => $comment->user->name,
+        //         'replies' => $comment->ParentCommentID,
+        //     ];            
+        // });
+
+
+        $comments = $post->comments()->with('user')->get();
+
+        dd($comments);
 
         return response()->json($comments);
     }

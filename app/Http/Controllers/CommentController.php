@@ -12,9 +12,7 @@ class CommentController extends Controller
      */
     public function index()
     {
-        $comment = Comment::query()->where('UserID', request()->user()->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate();
+        //
     }
 
     /**
@@ -33,18 +31,33 @@ class CommentController extends Controller
 
         $data = $request->validate([
             'PostID' => ['required', 'integer'],
-            'commentContent' => ['required', 'string']
+            'commentContent' => ['required', 'string'],
         ]);
+
 
 
         $data['UserID'] = $request->user()->id;
 
-        // Create a new comment using the validated data
-        $comment = Comment::create([
-            'PostID' => $data['PostID'],
-            'UserID' => $data['UserID'],
-            'Content' => $data['commentContent']
-        ]);
+
+        // $request->filled('CommentID'): This method checks if CommentID is present in the request and not an empty string.
+        if ($request->filled('CommentID')) {
+            $data['CommentID'] = $request->input('CommentID');
+
+            // Create a new comment using the validated data
+            $comment = Comment::create([
+                'PostID' => $data['PostID'],
+                'UserID' => $data['UserID'],
+                'Content' => $data['commentContent'],
+                'ParentCommentID' => $data['CommentID']
+            ]);
+        } else {
+            // Create a new comment using the validated data
+            $comment = Comment::create([
+                'PostID' => $data['PostID'],
+                'UserID' => $data['UserID'],
+                'Content' => $data['commentContent']
+            ]);
+        }
 
         return to_route('dashboard');
     }

@@ -1,7 +1,10 @@
 <form action="{{ route('comment.store') }}" method="post">
     @csrf
 
-    <input type="hidden" id="postid" name="PostID" value="">
+    <input type="hidden" id="postid" name="PostID" value="" required>
+
+    <input type="hidden" id="commentid" name="CommentID" value="">
+
 
     <div class="comment-inputbox flex gap-2 rounded-lg mt-2 mb-2">
 
