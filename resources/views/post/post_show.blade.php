@@ -12,7 +12,7 @@
 
         </div>
 
-        <div class="post-preview rounded-lg bg-white grid grid-cols-2 gap-4 justify-center" style="height: 100%;">
+        <div class="post-preview relative rounded-lg bg-white grid grid-cols-2 gap-4 justify-center" style="height: 100%;">
 
 
             <div class="popup-post-body">
@@ -93,29 +93,16 @@
 
                     </div>
 
-                    <div class="liked-by-imgs flex gap-2 relative">
+                    <div class="liked-by-imgs flex gap-2 ">
 
-                        <div class="first--liked-by-pp-img">
-                            <img class="object-cover rounded-full absolute"
-                                src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                        </div>
-
-                        <div class="sec--liked-by-pp-img">
-                            <img class="object-cover rounded-full absolute"
-                                src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                        </div>
-
-                        <div class="third--liked-by-pp-img">
-                            <img class="object-cover rounded-full absolute"
-                                src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                        </div>
-
-                        <p class="mb-2 text-sm" style="margin-left: 20px;">
+                        <p class="mb-2 text-sm">
                             liked by <strong>@username</strong> and <strong>others</strong>
                         </p>
                     </div>
 
-                    @include('comment.comment_create')
+
+                        @include('comment.comment_create')
+                        
                 </div>
 
 
