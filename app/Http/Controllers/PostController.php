@@ -108,26 +108,107 @@ class PostController extends Controller
         //
     }
 
+
+    //     public function getComments(Post $post)
+    // {
+    //     $comments = $post->comments()->with(['user', 'childComments.user'])->get()->map(function ($comment) {
+    //         $replies = [];
+
+    //         // Check if there are any child comments
+    //         if ($comment->childComments->isNotEmpty()) {
+    //             $replies = $comment->childComments->map(function ($reply) {
+    //                 return [
+    //                     'CommentID' => $reply->CommentID,
+    //                     'Content' => $reply->Content,
+    //                     'user_name' => $reply->user->name,
+    //                     'created_at' => $reply->created_at,
+    //                     'updated_at' => $reply->updated_at,
+    //                 ];
+    //             });
+    //         }
+
+    //         return [
+    //             'CommentID' => $comment->CommentID,
+    //             'PostID' => $comment->PostID,
+    //             'UserID' => $comment->UserID,
+    //             'Content' => $comment->Content,
+    //             'created_at' => $comment->created_at,
+    //             'updated_at' => $comment->updated_at,
+    //             'user_name' => $comment->user->name,
+    //             'replies' => $replies,
+    //         ];
+    //     });
+
+    //     return response()->json($comments);
+    // }
+
+
+    // public function getComments(Post $post)
+    // {
+    //     // Retrieve comments for the given post, including user and child comments' user relationships
+    //     $comments = $post->comments()->with(['user', 'childComments.user'])
+    //         // Filter to only get parent comments (those without a ParentCommentID)
+    //         ->whereNull('ParentCommentID')
+    //         // Fetch the filtered comments from the database
+    //         ->get()
+    //         // Map each comment to a transformed structure
+    //         ->map(function ($comment) {
+    //             // Transform the child comments (replies) to the desired structure
+    //             $replies = $comment->childComments->map(function ($reply) {
+    //                 return [
+    //                     'CommentID' => $reply->CommentID,
+    //                     'Content' => $reply->Content,
+    //                     'user_name' => $reply->user->name,
+    //                     'created_at' => $reply->created_at,
+    //                     'updated_at' => $reply->updated_at,
+    //                 ];
+    //             });
+
+    //             // Return the transformed structure for the parent comment including its replies
+    //             return [
+    //                 'CommentID' => $comment->CommentID,
+    //                 'PostID' => $comment->PostID,
+    //                 'UserID' => $comment->UserID,
+    //                 'Content' => $comment->Content,
+    //                 'created_at' => $comment->created_at,
+    //                 'updated_at' => $comment->updated_at,
+    //                 'user_name' => $comment->user->name,
+    //                 'replies' => $replies, // Include the transformed child comments (replies)
+    //             ];
+    //         });
+
+    //     // Return the transformed comments as a JSON response
+    //     return response()->json($comments);
+    // }
+
     public function getComments(Post $post)
     {
-        // $comments = $post->comments()->with('user')->get()->map(function ($comment) {
-        //     return [
-        //         'CommentID' => $comment->CommentID,
-        //         'PostID' => $comment->PostID,
-        //         'UserID' => $comment->UserID,
-        //         'Content' => $comment->Content,
-        //         'created_at' => $comment->created_at,
-        //         'updated_at' => $comment->updated_at,
-        //         'user_name' => $comment->user->name,
-        //         'replies' => $comment->ParentCommentID,
-        //     ];            
-        // });
-
-
-        $comments = $post->comments()->with('user')->get();
-
-        dd($comments);
+        $comments = $post->comments()->with(['user', 'childComments.user'])
+            ->whereNull('ParentCommentID') // Only get parent comments
+            ->get()
+            ->map(function ($comment) {
+                return $this->transformComment($comment);
+            });
 
         return response()->json($comments);
+    }
+
+    private function transformComment($comment)
+    {
+        // Transform child comments recursively
+        $replies = $comment->childComments->map(function ($reply) {
+            return $this->transformComment($reply);
+        });
+
+        return [
+            'CommentID' => $comment->CommentID,
+            'PostID' => $comment->PostID,
+            'UserID' => $comment->UserID,
+            'Content' => $comment->Content,
+            'created_at' => $comment->created_at,
+            'updated_at' => $comment->updated_at,
+            'user_name' => $comment->user->name,
+            'replies' => $replies,
+        ];
     }
 }

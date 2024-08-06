@@ -201,6 +201,8 @@
                 });
             }
 
+            // function fetchComments(postId) {
+
             function fetchComments(postId) {
                 $.ajax({
                     url: `/post/${postId}/comments`,
@@ -211,30 +213,38 @@
                         commentsSection.empty();
 
                         comments.forEach(comment => {
-                            console.log(comment);
-                            commentsSection.append(`
-                        <div class="comment flex gap-2 p-2">
-                             <div>
-                                    <img class="user-small-pp-img object-cover rounded-full"
-                                    src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                            </div>
-
-                            <div>
-                                <p><strong>${comment.user_name}:</strong> ${comment.Content}</p>
-                                <p><small>${formatDate(new Date(comment.created_at))}</small></p>
-                                <button class="comment-replyBtn text-sm text-blue hover-underline" data-comment-id=${comment.CommentID}>Reply</button>
-                            </div>
-                        </div>
-                    `);
+                            const commentHtml = generateCommentHtml(comment);
+                            commentsSection.append(commentHtml);
                         });
-
-                        // $('.right-section-popup').append(commentsSection);
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log('Error fetching comments:', textStatus, errorThrown);
                     }
                 });
             }
+
+            function generateCommentHtml(comment) {
+                let repliesHtml = '';
+
+                if (Array.isArray(comment.replies) && comment.replies.length > 0) {
+                    comment.replies.forEach(reply => {
+                        repliesHtml += generateCommentHtml(reply);
+                    });
+                }
+
+                return `
+        <div class="comment flex gap-2 p-2">
+            <div>
+                <img class="user-small-pp-img object-cover rounded-full"
+                src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
+            </div>
+            <div>
+                <p><strong>${comment.user_name}:</strong> ${comment.Content}</p>
+                <p><small>${formatDate(new Date(comment.created_at))}</small></p>
+                <button class="comment-replyBtn text-sm text-blue hover-underline" data-comment-id="${comment.CommentID}">Reply</button>
+                ${repliesHtml}
+            </div>
+        </div>
+    `;
+            }
+
 
             $(document).on('click', '.comment-replyBtn', function() {
                 const commentId = $(this).data('comment-id');
