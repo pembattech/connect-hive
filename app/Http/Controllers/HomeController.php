@@ -24,6 +24,7 @@ class HomeController extends Controller
         return view('home.home', [
             'posts' => $posts,
             'likedPosts' => $likedPosts,
+            'user' => $userId,
         ]);
     }
 }

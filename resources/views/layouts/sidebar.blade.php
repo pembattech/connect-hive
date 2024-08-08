@@ -44,7 +44,10 @@
         <div class="profile-box">
 
             <div class="flex gap-2 items-center justify-between">
-                <a href="{{ route('profile.edit') }}">
+                {{-- <a href="{{ route('profile.edit') }}"> --}}
+                {{-- <a href="{{ route('profile.show', ['user' => $user->id]) }}"> --}}
+                <a href="{{ route('profile.show', $user) }}">
+
                     <div class="hover:bg-gray-100 rounded-lg p-2 flex gap-2 items-center">
 
                         <img class="user-small-pp-img object-cover rounded-full"
