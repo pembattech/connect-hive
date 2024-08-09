@@ -1,3 +1,4 @@
+@if ($posts)
     @foreach ($posts as $post)
         <div class="post-section mt-6">
             <div class="post mb-6">
@@ -5,10 +6,26 @@
                 <div class="post-top-bar p-2 top-0 w-full text-black items-center">
 
                     <div class="flex gap-2 items-center">
-                        <img class="user-small-pp-img object-cover rounded-full"
-                            src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                        <p class="post-user"><strong>{{ $post['user']['name'] }}</strong> • <span
-                                id="created_at">{{ $post['created_at']->format('d M Y, H:i') }}</span></p>
+
+                        <a href="{{ route('profile.show', $post['user']['id']) }}">
+                            @if ($post['user']['profile_picture'])
+                                <img class="user-small-pp-img object-cover rounded-full"
+                                    src="{{ asset('images/pp_images/' . $post['user']['profile_picture']) }}"
+                                    alt="pp">
+                            @else
+                                <svg class="user-small-pp-img" xmlns="http://www.w3.org/2000/svg" height="24px"
+                                    viewBox="0 -960 960 960" width="24px" fill="#000000">
+                                    <path
+                                        d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z" />
+                                </svg>
+                            @endif
+                        </a>
+
+                        <a href="{{ route('profile.show', $post['user']['id']) }}">
+                            <p class="post-user"><strong>{{ $post['user']['name'] }}</strong> • <span
+                                    id="created_at">{{ $post['created_at']->format('d M Y, H:i') }}</span></p>
+                        </a>
+
                     </div>
 
                     <div>
@@ -230,34 +247,35 @@
                 }
 
                 return `
-        <div class="comment flex gap-2 p-2">
-            <div>
-                <img class="user-small-pp-img object-cover rounded-full"
-                src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-            </div>
-            <div>
-                <p><strong>${comment.user_name}:</strong> ${comment.Content}</p>
-                <p><small>${formatDate(new Date(comment.created_at))}</small></p>
-                <button class="comment-replyBtn text-sm text-blue hover-underline" data-comment-id="${comment.CommentID}">Reply</button>
-                ${repliesHtml}
-            </div>
-        </div>
-    `;
-            }
+                    <div class="comment flex gap-2 p-2">
+                        <div>
+                            @if ($post['user']['profile_picture'])
+                                        <img class="user-small-pp-img object-cover rounded-full"
+                                        src="{{ asset('images/pp_images/' . $post['user']['profile_picture']) }}" alt="pp">
+                            @else
+                            <svg class="user-small-pp-img" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>
+                            @endif
+                        </div>
+                        <div>
+                            <p><strong>${comment.user_name}:</strong> ${comment.Content}</p>
+                            <p><small>${formatDate(new Date(comment.created_at))}</small></p>
+                            <button class="comment-replyBtn text-sm text-blue hover-underline" data-comment-id="${comment.CommentID}">Reply</button>
+                            ${repliesHtml}
+                        </div>
+                    </div>
+                `;
+                }
 
 
             $(document).on('click', '.comment-replyBtn', function() {
                 const commentId = $(this).data('comment-id');
-                // const postId = $($post_commentElements).data('post-id');
-
-                console.log(commentId);
-
-                // $("#postid").val(postId);
+                
                 $("#commentid").val(commentId);
-
-
             });
 
 
         });
     </script>
+@else
+    <p>No post.</p>
+@endif

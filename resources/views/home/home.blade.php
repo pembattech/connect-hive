@@ -5,7 +5,7 @@
         <section class="home-wrapper">
 
             {{-- story  --}}
-            <div class="flex gap-4 p-4">
+            {{-- <div class="flex gap-4 p-4">
                 <div class="relative">
 
                     <img class="story-pp-img object-cover rounded-full"
@@ -53,7 +53,7 @@
                         src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
                 </div>
 
-            </div>
+            </div> --}}
 
             <div class="mid-content">
 
