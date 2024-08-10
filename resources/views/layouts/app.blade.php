@@ -15,6 +15,9 @@
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
 
     <!-- Scripts -->
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>

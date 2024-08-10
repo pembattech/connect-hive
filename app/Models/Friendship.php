@@ -12,7 +12,7 @@ class Friendship extends Model
     protected $primaryKey = 'FriendshipID';
 
     protected $fillable = [
-        'UserID1', 'UserID2', 'Status',
+        'UserID1', 'UserID2', 'Status'
     ];
 
     public function user1()

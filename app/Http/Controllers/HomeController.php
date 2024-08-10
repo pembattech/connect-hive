@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Friendship;
 use Illuminate\Http\Request;
 
 use App\Models\Post;
@@ -42,6 +43,9 @@ class HomeController extends Controller
     $users = User::where('name', 'LIKE', "%{$query}%")
                  ->get();
 
+
+    $friendship = Friendship::where('UserID1', $request->user()->id)->pluck('UserID2')->toArray();
+
     // // Search posts
     // $posts = Post::where('content', 'LIKE', "%{$query}%")
     //              ->orWhereHas('user', function($q) use ($query) {
@@ -63,7 +67,7 @@ class HomeController extends Controller
         'groups' => [],
     ];
 
-    return view('home.search', ['results' => $results, 'user' => $user,]);
+    return view('home.search', ['results' => $results, 'user' => $user, 'friendship' => $friendship]);
 }
 
 }

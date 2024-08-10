@@ -4,6 +4,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\FriendshipController;
 use App\Http\Controllers\MessageController;
 
 use App\Http\Controllers\ProfileController;
@@ -23,6 +24,9 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('comment', CommentController::class);
 
+    Route::post('/friendship/addfriend', [FriendshipController::class, 'addfriend'])->name('friendship.addfriend');
+
+
     Route::resource('message', MessageController::class);
 });
 
@@ -31,6 +35,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->group(function () {
     Route::post('/profile/upload_pp', [ProfileController::class, 'upload_pp'])->name('profile.upload_pp');
     Route::get('/profile/{user}', [ProfileController::class, 'show'])->name('profile.show');
+
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
