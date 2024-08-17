@@ -10,7 +10,6 @@
 
             <div style="width: 80%;">
                 <form action="{{ route('search') }}" method="GET">
-                    @csrf
 
                     <input type="text"
                     class="w-full text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
