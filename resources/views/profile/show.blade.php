@@ -29,7 +29,11 @@
                 @endif
             </div>
 
-            @include('post.index')
+            @if (count($posts) > 0)
+                @include('post.index')
+            @else
+                <p class="text-center mt-6">No posts available.</p>
+            @endif
 
         </section>
 

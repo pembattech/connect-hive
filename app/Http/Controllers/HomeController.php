@@ -31,43 +31,53 @@ class HomeController extends Controller
     }
 
     public function search(Request $request)
-{
-    // Validate the search input
-    $request->validate([
-        'query' => 'required|string|max:255',
-    ]);
+    {
+        // Validate the search input
+        $request->validate([
+            'query' => 'required|string|max:255',
+        ]);
 
-    $query = $request->input('query');
+        $query = $request->input('query');
 
-    // Search users
-    $users = User::where('name', 'LIKE', "%{$query}%")
-                 ->get();
+        // Search users
+        $users = User::where('name', 'LIKE', "%{$query}%")
+            ->get();
 
 
-    $friendship = Friendship::where('UserID1', $request->user()->id)->pluck('UserID2')->toArray();
+        $send_friendreq = Friendship::where('UserID1', $request->user()->id)->pluck('UserID2')->toArray();
 
-    // // Search posts
-    // $posts = Post::where('content', 'LIKE', "%{$query}%")
-    //              ->orWhereHas('user', function($q) use ($query) {
-    //                  $q->where('name', 'LIKE', "%{$query}%");
-    //              })
-    //              ->get();
+        // Tyo search gareko user bata any request ako cha ki chaina. if cha vaney response
+        $rec_friendreq = Friendship::where('UserID2', $request->user()->id)->pluck('UserID1')->toArray();
 
-    // // Search groups
-    // $groups = Group::where('name', 'LIKE', "%{$query}%")
-    //                ->orWhere('description', 'LIKE', "%{$query}%")
-    //                ->get();
 
-    $user = $request->user();
 
-    // Combine results into an array
-    $results = [
-        'users' => $users,
-        'posts' => [],
-        'groups' => [],
-    ];
 
-    return view('home.search', ['results' => $results, 'user' => $user, 'friendship' => $friendship]);
-}
+        // // Search posts
+        // $posts = Post::where('content', 'LIKE', "%{$query}%")
+        //              ->orWhereHas('user', function($q) use ($query) {
+        //                  $q->where('name', 'LIKE', "%{$query}%");
+        //              })
+        //              ->get();
 
+        // // Search groups
+        // $groups = Group::where('name', 'LIKE', "%{$query}%")
+        //                ->orWhere('description', 'LIKE', "%{$query}%")
+        //                ->get();
+
+        $user = $request->user();
+
+        // Combine results into an array
+        $results = [
+            'users' => $users,
+            'posts' => [],
+            'groups' => [],
+        ];
+
+        return view('home.search', [
+            'results' => $results,
+            'user' => $user, 
+            'send_friendreq' => $send_friendreq, 
+            'rec_friendreq' => $rec_friendreq,
+        ]);
+    }
 }
