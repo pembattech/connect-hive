@@ -6,13 +6,14 @@
 
         <section class="friendship-wrapper p-4">
 
-            <h1 class="font-semibold text-gray-900 text-xl" style="padding-bottom: 1rem;">Friends <span class="text-sm">({{ count($friends) }})</span></h1>
-                
+            <h1 class="font-semibold text-gray-900 text-xl" style="padding-bottom: 1rem;">Friends <span
+                    class="text-sm">({{ count($friends) }})</span></h1>
+
             @if (count($friends) > 0)
 
-                <div class="grid grid-cols-3 gap-4">
+                <div class="grid grid-cols-2 gap-4">
                     @foreach ($friends as $friend)
-                        <div class="bg-white border border-gray-200 rounded-lg shadow">
+                        <div class="bg-white border border-gray-200 rounded-lg shadow" id="friend-{{ $friend->id }}">
 
                             <div class="flex flex-col items-center p-4 ">
 
@@ -31,9 +32,16 @@
                                 <h5 class="mb-1 text-xl font-medium text-gray-900">{{ $friend->name }}</h5>
 
                                 <div class="flex mt-4 md:mt-6">
+                                    <button class="unfriend-btn inline-flex items-center px-4 py-2 bg-red-700
+                                        hover:bg-red-800 focus:ring-4 focus:ring-red-300 text-sm font-medium text-center
+                                        text-white rounded-lg focus:outline-none"
+                                        data-friend-id="{{ $friend->id }}">Unfriend</button>
+
                                     <a href="#"
                                         class="py-2 px-4 ms-2 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100">Message</a>
+
                                 </div>
+
                             </div>
                         </div>
                     @endforeach
@@ -43,4 +51,31 @@
             @endif
         </section>
     </div>
+
+    <script>
+        $(document).on('click', '.unfriend-btn', function() {
+            const friendId = $(this).data('friend-id');
+
+            $.ajax({
+                url: '/friendship/unfriend',
+                method: 'DELETE',
+                data: {
+                    friend_id: friendId,
+                    _token: $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(response) {
+                    if (response.success) {
+
+                        // Optionally, remove the friend from the UI
+                        $(`#friend-${friendId}`).remove();
+                    } else {
+                        alert('Failed to remove friendship.');
+                    }
+                },
+                error: function() {
+                    alert('An error occurred while trying to unfriend.');
+                }
+            });
+        });
+    </script>
 </x-app-layout>

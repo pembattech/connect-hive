@@ -63,18 +63,38 @@ class HomeController extends Controller
         ]);
 
         $query = $request->input('query');
+        $currentUserId = $request->user()->id;
 
         // Search users
         $users = User::where('name', 'LIKE', "%{$query}%")
             ->get();
 
+        // Check if there's an existing friendship record Attach friendship status to each user in the search results
+        foreach ($users as $user) {
+            $otherUserId = $user->id;
 
-        $send_friendreq = Friendship::where('UserID1', $request->user()->id)->pluck('UserID2')->toArray();
+            $friendship = Friendship::where(function ($query) use ($currentUserId, $otherUserId) {
+                $query->where('UserID1', $currentUserId)
+                    ->where('UserID2', $otherUserId);
+            })
+                ->orWhere(function ($query) use ($currentUserId, $otherUserId) {
+                    $query->where('UserID1', $otherUserId)
+                        ->where('UserID2', $currentUserId);
+                })
+                ->first();
 
-        $rec_friendreq = Friendship::where('UserID2', $request->user()->id)->pluck('UserID1')->toArray();
-
-
-
+            if ($friendship) {
+                if ($friendship['Status'] === 'accepted') {
+                    $user->friendshipStatus = 'friend';
+                } elseif ($friendship->UserID1 == $currentUserId) {
+                    $user->friendshipStatus = 'pending'; // Current user is the sender
+                } elseif ($friendship->UserID2 == $currentUserId) {
+                    $user->friendshipStatus = 'response'; // Current user is the receiver
+                }
+            } else {
+                $user->friendshipStatus = 'add friend'; // No existing friendship
+            }
+        }
 
         // // Search posts
         // $posts = Post::where('content', 'LIKE', "%{$query}%")
@@ -88,20 +108,9 @@ class HomeController extends Controller
         //                ->orWhere('description', 'LIKE', "%{$query}%")
         //                ->get();
 
-        $user = $request->user();
-
-        // Combine results into an array
-        $results = [
-            'users' => $users,
-            'posts' => [],
-            'groups' => [],
-        ];
 
         return view('home.search', [
-            'results' => $results,
-            'user' => $user,
-            'send_friendreq' => $send_friendreq,
-            'rec_friendreq' => $rec_friendreq,
+            'users' => $users,
         ]);
     }
 }

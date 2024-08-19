@@ -17,9 +17,23 @@ class FriendshipController extends Controller
             $data['UserID2'] = $request->input('user_id');
             $data['Status'] = "pending";
 
-            $add_friend = Friendship::create($data);
+            $userId =$data['UserID1'];
+            $friendId = $data['UserID2'];
 
-            return response()->json(['message' => 'pending']);
+            $issent_already = Friendship::where(function ($query) use ($userId, $friendId) {
+                $query->where('UserID1', $userId)->where('UserID2', $friendId);
+            })->orWhere(function ($query) use ($userId, $friendId) {
+                $query->where('UserID1', $friendId)->where('UserID2', $userId);
+            })->exists();
+
+            if (!$issent_already) {
+
+                $add_friend = Friendship::create($data);
+    
+                return response()->json(['message' => 'pending']);
+            }
+
+
         } catch (\Exception $e) {
             // Log the exception for debugging
             \Log::error('Error in addfriend: ' . $e->getMessage());
@@ -68,18 +82,18 @@ class FriendshipController extends Controller
         // Get the list of friends where the current user is either UserID1 or UserID2
         $friends = User::whereIn('id', function ($query) use ($userId) {
             $query->select('UserID2')
-                  ->from('friendships')
-                  ->where('UserID1', $userId)
-                  ->where('Status', 'accepted');
+                ->from('friendships')
+                ->where('UserID1', $userId)
+                ->where('Status', 'accepted');
         })
-        ->orWhereIn('id', function ($query) use ($userId) {
-            $query->select('UserID1')
-                  ->from('friendships')
-                  ->where('UserID2', $userId)
-                  ->where('Status', 'accepted');
-        })
-        ->get();
-        
+            ->orWhereIn('id', function ($query) use ($userId) {
+                $query->select('UserID1')
+                    ->from('friendships')
+                    ->where('UserID2', $userId)
+                    ->where('Status', 'accepted');
+            })
+            ->get();
+
         return view('friendship.index', ['friends' => $friends]);
     }
 
@@ -126,6 +140,27 @@ class FriendshipController extends Controller
             return redirect()->back();
         }
     }
+
+    public function unfriend(Request $request)
+    {
+        $userId = $request->user()->id;
+        $friendId = $request->friend_id;
+
+        // Delete the friendship record where the current user is either UserID1 or UserID2
+        $deleted = Friendship::where(function ($query) use ($userId, $friendId) {
+            $query->where('UserID1', $userId)->where('UserID2', $friendId);
+        })->orWhere(function ($query) use ($userId, $friendId) {
+            $query->where('UserID1', $friendId)->where('UserID2', $userId);
+        })->delete();
+
+        if ($deleted) {
+            return response()->json(['success' => true, 'message' => 'Friendship removed successfully.']);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Failed to remove friendship.']);
+        }
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

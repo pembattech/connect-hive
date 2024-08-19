@@ -24,6 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::resource('comment', CommentController::class);
 
     Route::get('/friendship', [FriendshipController::class, 'index'])->name('friendship.friends');
+    Route::delete('/friendship/unfriend', [FriendshipController::class, 'unfriend'])->name('friendship.unfriend');
     Route::post('/friendship/addfriend', [FriendshipController::class, 'addfriend'])->name('friendship.addfriend');
     Route::get('/friendship/friendrequests', [FriendshipController::class, 'friendrequests'])->name('friendship.friendrequests');
     Route::post('/friendship/accept-pending', [FriendshipController::class, 'acceptPendingRequests'])->name('friendship.acceptPending');
