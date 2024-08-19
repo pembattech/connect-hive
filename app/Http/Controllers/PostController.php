@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Post;
 use App\Models\Like;
 
@@ -14,23 +15,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $userId = request()->user()->id;
-
-        // $posts = Post::query()->where('UserID', request()->user()->id)
-        //     ->orderBy('created_at', 'desc')
-        //     ->paginate();
-
-        $posts = Post::query()->orderBy('created_at', 'desc')
-            ->paginate();
-
-        // Fetch the IDs of liked posts for the authenticated user
-        $likedPosts = Like::where('UserID', $userId)->pluck('PostID')->toArray();
-
-        // Pass the posts and liked posts to the view
-        return view('post.index', [
-            'posts' => $posts,
-            'likedPosts' => $likedPosts,
-        ]);
+        return to_route('dashboard');
     }
 
     /**
@@ -74,6 +59,15 @@ class PostController extends Controller
         if (request()->ajax()) {
 
             $post['user_name'] = $post->user['name'];
+
+            // Add like count and comment count to the post data
+            $post['like_count'] = $post->likes()->count();
+            $post['comment_count'] = $post->comments()->count();
+
+            // Check if the loggedin user have liked the post.
+            $post['islike'] = Like::where('UserID', request()->user()->id)
+                ->where('PostID', $post->PostID)
+                ->exists();
 
             // Unset the user relationship to avoid including it in the JSON response
             unset($post['user']);
@@ -200,6 +194,14 @@ class PostController extends Controller
             return $this->transformComment($reply);
         });
 
+        // Determine the profile picture HTML
+        if ($comment->user->profile_picture != null) {
+            $img_html = '<img class="user-xsmall-pp-img object-cover rounded-full"
+        src="' . asset('images/pp_images/' . $comment->user->profile_picture) . '" alt="pp">';
+        } else {
+            $img_html = '<svg class="user-xsmall-pp-img" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>';
+        }
+
         return [
             'CommentID' => $comment->CommentID,
             'PostID' => $comment->PostID,
@@ -208,6 +210,7 @@ class PostController extends Controller
             'created_at' => $comment->created_at,
             'updated_at' => $comment->updated_at,
             'user_name' => $comment->user->name,
+            'user_pp' => $img_html, // Use the HTML string here
             'replies' => $replies,
         ];
     }

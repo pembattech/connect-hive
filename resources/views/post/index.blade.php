@@ -62,16 +62,22 @@
 
                     @include('like.like_create')
 
+                    @if ($post->likes_count != 0)
+                        <p>{{ $post->likes_count }}</p>
+                    @endif
 
-                    <div class="post-opt-hover commentInput-btn" data-post-id="{{ $post['PostID'] }}">
+                    <div class="post-opt-hover commentInput-btn">
 
                         <svg class="asset-btn-svg commentInput-svg" xmlns="http://www.w3.org/2000/svg" height="24px"
                             viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
                             <path
                                 d="M240-400h480v-80H240v80Zm0-120h480v-80H240v80Zm0-120h480v-80H240v80ZM80-240v-640h800v800L720-240H80Zm80-80h594l46 45v-525H160v480Zm0 0v-480 480Z" />
                         </svg>
-
                     </div>
+
+                    @if ($post->comments_count != 0)
+                        <p>{{ $post->comments_count }}</p>
+                    @endif
 
                 </div>
 
@@ -81,43 +87,6 @@
                         <path
                             d="M680-80q-50 0-85-35t-35-85q0-6 3-28L282-392q-16 15-37 23.5t-45 8.5q-50 0-85-35t-35-85q0-50 35-85t85-35q24 0 45 8.5t37 23.5l281-164q-2-7-2.5-13.5T560-760q0-50 35-85t85-35q50 0 85 35t35 85q0 50-35 85t-85 35q-24 0-45-8.5T598-672L317-508q2 7 2.5 13.5t.5 14.5q0 8-.5 14.5T317-452l281 164q16-15 37-23.5t45-8.5q50 0 85 35t35 85q0 50-35 85t-85 35Zm0-80q17 0 28.5-11.5T720-200q0-17-11.5-28.5T680-240q-17 0-28.5 11.5T640-200q0 17 11.5 28.5T680-160ZM200-440q17 0 28.5-11.5T240-480q0-17-11.5-28.5T200-520q-17 0-28.5 11.5T160-480q0 17 11.5 28.5T200-440Zm480-280q17 0 28.5-11.5T720-760q0-17-11.5-28.5T680-800q-17 0-28.5 11.5T640-760q0 17 11.5 28.5T680-720Zm0 520ZM200-480Zm480-280Z" />
                     </svg>
-                </div>
-
-            </div>
-
-            <p>
-                if liked gareko mancha friend cha vaney otherwise display `1000 likes`
-            </p>
-
-            <div class="post-bottom">
-
-                <div class="liked-by-imgs flex gap-2 relative">
-
-                    <div class="first--liked-by-pp-img">
-                        <img class="object-cover rounded-full absolute"
-                            src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                    </div>
-
-                    <div class="sec--liked-by-pp-img">
-                        <img class="object-cover rounded-full absolute"
-                            src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                    </div>
-
-                    <div class="third--liked-by-pp-img">
-                        <img class="object-cover rounded-full absolute"
-                            src="{{ asset('images/profile-images/profile.jpg') }}" alt="pp">
-                    </div>
-
-                    <p class="mb-2 text-sm" style="margin-left: 20px;">
-                        liked by <strong>@username</strong> and <strong>others</strong>
-                    </p>
-                </div>
-
-                <div class="post-comment" data-post-id="{{ $post['PostID'] }}">
-                    <p class="view-post-comment text-sm text-gray-700">
-                        View all 11 comment
-                    </p>
-
                 </div>
 
             </div>
@@ -156,16 +125,6 @@
 
         });
 
-        const $post_commentElements = $('.post-comment');
-
-        $post_commentElements.on('click', function() {
-            const postId = $(this).data('post-id');
-
-            post_preview_ajax(postId);
-
-        });
-
-
         $('#cancelButton').on('click', function() {
             $popupForm.hide();
         });
@@ -177,6 +136,8 @@
                 dataType: 'json',
                 success: function(data) {
 
+                    console.log(data['islike']);
+
                     $popupForm.show();
 
                     $("#commentInput").val("");
@@ -184,7 +145,21 @@
                     $(".post-user-popup").text(`${data.user_name}`);
                     $("#created_at_popup").text(`${formatDate(new Date(data.created_at))}`);
                     $("#postid").val(`${data.PostID}`);
+                    $(".postid__like").val(`${data.PostID}`);
 
+                    if (data['islike']) {
+                        $(".post_show_like_btn").css("fill", "blue");
+                    } else {
+                        $(".post_show_like_btn").css("fill", "#333");
+                    }
+
+                    if (data.like_count != 0) {
+                        $("#like_count").text(`${data.like_count}`);
+                    }
+
+                    if (data.comment_count != 0) {
+                        $("#comment_count").text(`${data.comment_count}`);
+                    }
 
                     const popup_post_body = $('.popup-post-body');
                     popup_post_body.empty();
@@ -224,6 +199,7 @@
                 method: 'GET',
                 dataType: 'json',
                 success: function(comments) {
+
                     const commentsSection = $('.comments-section');
                     commentsSection.empty();
 
@@ -247,12 +223,7 @@
             return `
                     <div class="comment flex gap-2 p-2">
                         <div>
-                            @if ($post['user']['profile_picture'])
-                                        <img class="user-small-pp-img object-cover rounded-full"
-                                        src="{{ asset('images/pp_images/' . $post['user']['profile_picture']) }}" alt="pp">
-                            @else
-                            <svg class="user-small-pp-img" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>
-                            @endif
+                            ${comment.user_pp}
                         </div>
                         <div>
                             <p><strong>${comment.user_name}:</strong> ${comment.Content}</p>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Friendship;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class FriendshipController extends Controller
@@ -15,12 +16,6 @@ class FriendshipController extends Controller
             $data['UserID1'] = $request->user()->id;
             $data['UserID2'] = $request->input('user_id');
             $data['Status'] = "pending";
-
-
-            // Proceed with sending a new friend request
-            $data['UserID1'] = $request->user()->id;
-            $data['UserID2'] = $request->input('user_id');
-            $data['Status'] = 'pending';
 
             $add_friend = Friendship::create($data);
 
@@ -48,13 +43,88 @@ class FriendshipController extends Controller
         }
     }
 
+    public function acceptPendingRequests(Request $request)
+    {
+        $request_sender_id = $request->input('sender_id');
+
+        $updatedRows = Friendship::where('Status', 'pending')
+            ->where('UserID2', $request->user()->id)
+            ->where('UserID1', $request_sender_id)
+            ->update(['Status' => 'accepted']);
+
+        if ($updatedRows) {
+            return redirect()->back();
+        }
+    }
+
 
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $userId = request()->user()->id;
+
+        // Get the list of friends where the current user is either UserID1 or UserID2
+        $friends = User::whereIn('id', function ($query) use ($userId) {
+            $query->select('UserID2')
+                  ->from('friendships')
+                  ->where('UserID1', $userId)
+                  ->where('Status', 'accepted');
+        })
+        ->orWhereIn('id', function ($query) use ($userId) {
+            $query->select('UserID1')
+                  ->from('friendships')
+                  ->where('UserID2', $userId)
+                  ->where('Status', 'accepted');
+        })
+        ->get();
+        
+        return view('friendship.index', ['friends' => $friends]);
+    }
+
+
+
+    public function friendrequests()
+    {
+
+        if (request()->ajax()) {
+            $friendrequests = Friendship::query()->where('UserID2', request()->user()->id)
+                ->where('Status', 'pending')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json($friendrequests);
+        } else {
+
+            $friendrequests = Friendship::query()->where('UserID2', request()->user()->id)
+                ->where('Status', 'pending')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+
+            return view('friendship.friendrequest', [
+                'friendrequests' => $friendrequests
+            ]);
+        }
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Friendship $friendship)
+    {
+        $request_sender_id = request()->input('sender_id');
+
+        $deleteRow = Friendship::query()
+            ->where('UserID1', $request_sender_id)
+            ->where('UserID2', request()->user()->id)
+            ->where('Status', 'pending')
+            ->delete();
+
+        if ($deleteRow) {
+            return redirect()->back();
+        }
     }
 
     /**
@@ -78,7 +148,17 @@ class FriendshipController extends Controller
      */
     public function show(Friendship $friendship)
     {
-        //
+        // if (request()->ajax()) {
+        //     $friendrequests = Friendship::query()->where('UserID2', request()->user()->id)
+        //         ->orderBy('created_at', 'desc')
+        //         ->get();
+
+        //     return response()->json($friendrequests);
+        // }
+
+        // return to_route("dashboard");
+
+
     }
 
     /**
@@ -93,14 +173,6 @@ class FriendshipController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, Friendship $friendship)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Friendship $friendship)
     {
         //
     }

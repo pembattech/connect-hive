@@ -7,7 +7,7 @@
                 @csrf
 
                 <textarea name="content" id="contentInput"
-                    class="w-full px-4 pl-10 mt-2 mb-2 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                    class="w-full mt-2 mb-2 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
                     cols="30" rows="1" placeholder="Caption [optional]"></textarea>
 
                 <div class="mt-2 mb-2">

@@ -17,14 +17,17 @@ Route::middleware('auth')->group(function () {
     Route::get('/search', [HomeController::class, 'search'])->name('search');
 
     Route::get('/post/{post}/comments', [PostController::class, 'getComments']);
-
     Route::resource('post', PostController::class);
 
     Route::resource('like', LikeController::class);
 
     Route::resource('comment', CommentController::class);
 
+    Route::get('/friendship', [FriendshipController::class, 'index'])->name('friendship.friends');
     Route::post('/friendship/addfriend', [FriendshipController::class, 'addfriend'])->name('friendship.addfriend');
+    Route::get('/friendship/friendrequests', [FriendshipController::class, 'friendrequests'])->name('friendship.friendrequests');
+    Route::post('/friendship/accept-pending', [FriendshipController::class, 'acceptPendingRequests'])->name('friendship.acceptPending');
+    Route::post('/friendship/cancel-pending', [FriendshipController::class, 'destroy'])->name('friendship.cancelPending');
 
 
     Route::resource('message', MessageController::class);

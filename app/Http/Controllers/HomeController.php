@@ -15,18 +15,43 @@ class HomeController extends Controller
     {
         $userId = request()->user()->id;
 
-        $posts = Post::query()
+        // Get the list of friend IDs
+        $friendsIds = User::whereIn('id', function ($query) use ($userId) {
+            $query->select('UserID2')
+                ->from('friendships')
+                ->where('UserID1', $userId)
+                ->where('Status', 'accepted');
+        })
+            ->orWhereIn('id', function ($query) use ($userId) {
+                $query->select('UserID1')
+                    ->from('friendships')
+                    ->where('UserID2', $userId)
+                    ->where('Status', 'accepted');
+            })
+            ->pluck('id'); // Get a list of friend IDs
+
+        // Add the current user's ID to the list of IDs
+        $friendAndSelfIds = $friendsIds->merge([$userId]);
+
+        // Retrieve posts from friends and the current user
+        $posts = Post::whereIn('UserID', $friendAndSelfIds)
+            ->withCount(['likes', 'comments']) // Eager load and count likes and comments
             ->orderBy('created_at', 'desc')
-            ->paginate();
+            ->paginate(); // Adjust pagination as needed
 
         // Fetch the IDs of liked posts for the authenticated user
         $likedPosts = Like::where('UserID', $userId)->pluck('PostID')->toArray();
+
+        // Retrieve friends' details: name, ID, and profile picture
+        $friendsDetails = User::whereIn('id', $friendsIds)
+            ->get(['id', 'name', 'profile_picture']);
 
         // Pass the posts and liked posts to the view
         return view('home.home', [
             'posts' => $posts,
             'likedPosts' => $likedPosts,
             'user' => $userId,
+            'friendsDetails' => $friendsDetails,
         ]);
     }
 
@@ -46,7 +71,6 @@ class HomeController extends Controller
 
         $send_friendreq = Friendship::where('UserID1', $request->user()->id)->pluck('UserID2')->toArray();
 
-        // Tyo search gareko user bata any request ako cha ki chaina. if cha vaney response
         $rec_friendreq = Friendship::where('UserID2', $request->user()->id)->pluck('UserID1')->toArray();
 
 
@@ -75,8 +99,8 @@ class HomeController extends Controller
 
         return view('home.search', [
             'results' => $results,
-            'user' => $user, 
-            'send_friendreq' => $send_friendreq, 
+            'user' => $user,
+            'send_friendreq' => $send_friendreq,
             'rec_friendreq' => $rec_friendreq,
         ]);
     }

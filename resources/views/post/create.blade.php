@@ -7,7 +7,7 @@
                 <div class="relative">
 
                     <textarea name="content" id="contentInput"
-                        class="w-full px-4 pl-10 text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                        class="w-full text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
                         cols="30" rows="1" placeholder="What's on your mind, {{ Auth::user()->name }}?"></textarea>
 
                     <button class="post-submit-button absolute alice-blue text-blue font-sm text-lg p-2 rounded-lg" id="post-submit-button">Submit</button>

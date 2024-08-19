@@ -4,18 +4,19 @@
 
         <div class="flex gap-4 items-center">
             <div class="connecthive-logo">
-                <img class="user-small-pp-img object-cover rounded-full"
-                    src="{{ asset('images/logo.png') }}" alt="pp">
+                <a href="{{ route('dashboard') }}">
+                    <img class="user-small-pp-img object-cover rounded-full" src="{{ asset('images/logo.png') }}"
+                        alt="pp">
+                </a>
             </div>
 
             <div style="width: 80%;">
                 <form action="{{ route('search') }}" method="GET">
 
                     <input type="text"
-                    class="w-full text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
-                    name = 'query'
-                    placeholder="Search">
-                    
+                        class="w-full text-gray-700 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-600"
+                        name = 'query' placeholder="Search">
+
                 </form>
             </div>
 
@@ -41,6 +42,24 @@
                         <p>Message</p>
                     </div>
                 </a>
+
+                <a href="{{ route('friendship.friends') }}">
+                    <div class="text-xl rounded-lg p-4 hover:bg-gray-100 cursor-pointer">
+                        <p>Friends</p>
+                    </div>
+                </a>
+
+                <a href="{{ route('friendship.friendrequests') }}">
+                    <div class="relative text-xl rounded-lg p-4 hover:bg-gray-100 cursor-pointer">
+                        <p>Friend Requests</p>
+
+
+                        <div class="friendrequest-alert absolute top-4 right-28 w-2 h-2 rounded-full hidden"
+                            style="background-color: #e63946;"></div>
+
+
+                    </div>
+                </a>
             </div>
 
         </nav>
@@ -48,7 +67,7 @@
         <div class="profile-box">
 
             <div class="flex gap-2 items-center justify-between">
-                <a href="{{ route('profile.show', $user) }}">
+                <a href="{{ route('profile.show', Auth::user()) }}">
 
                     <div class="hover:bg-gray-100 rounded-lg p-2 flex gap-2 items-center">
 
@@ -88,4 +107,29 @@
         </div>
 
     </div>
+
+    <script>
+        $(document).ready(function() {
+            check_frndreq_alert();
+
+            function check_frndreq_alert() {
+                $.ajax({
+                    url: `/friendship/friendrequests`,
+                    method: 'GET',
+                    dataType: 'json',
+                    success: function(result) {
+                        if (result.length > 0) {
+                            $('.friendrequest-alert').show()
+                        } else {
+                            $('.friendrequest-alert').hide()
+                        }
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log('Error fetching friend requests:', textStatus, errorThrown);
+                    }
+                });
+            }
+
+        });
+    </script>
 </section>
