@@ -66,7 +66,7 @@
                         <p>{{ $post->likes_count }}</p>
                     @endif
 
-                    <div class="post-opt-hover commentInput-btn">
+                    <div class="post-opt-hover commentInput-btn" data-post-id="{{ $post['PostID'] }}">
 
                         <svg class="asset-btn-svg commentInput-svg" xmlns="http://www.w3.org/2000/svg" height="24px"
                             viewBox="0 -960 960 960" width="24px" fill="#e8eaed">
@@ -111,6 +111,7 @@
         $post_bodyElements.on('click', function() {
             const postId = $(this).data('post-id');
 
+            alert('test1');
             post_preview_ajax(postId);
 
         });
@@ -120,7 +121,7 @@
 
         $commentInput_btnElements.on('click', function() {
             const postId = $(this).data('post-id');
-
+            alert('test2');
             post_preview_ajax(postId);
 
         });
@@ -136,12 +137,30 @@
                 dataType: 'json',
                 success: function(data) {
 
-                    console.log(data['islike']);
+
+                    console.log(data);
 
                     $popupForm.show();
 
                     $("#commentInput").val("");
 
+
+
+                    let img_html;
+                    const baseUrl = window.location.origin + '/images/pp_images/';
+
+                    if (data.user_pp !== null) {
+                        img_html = `<img class="user-small-pp-img object-cover rounded-full" 
+                  src="${baseUrl + data.user_pp}" 
+                  alt="pp">`;
+                    } else {
+                        img_html = `<svg class="user-small-pp-img" xmlns="http://www.w3.org/2000/svg" 
+                  height="24px" viewBox="0 -960 960 960" width="24px" fill="#000000">
+                  <path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/>
+                </svg>`;
+                    }
+
+                    $("#preview-post-user-pp").html(`${img_html}`);
                     $(".post-user-popup").text(`${data.user_name}`);
                     $("#created_at_popup").text(`${formatDate(new Date(data.created_at))}`);
                     $("#postid").val(`${data.PostID}`);
@@ -154,11 +173,11 @@
                     }
 
                     if (data.like_count != 0) {
-                        $("#like_count").text(`${data.like_count}`);
+                        $("#preview_like_count").text(`${data.like_count}`);
                     }
 
                     if (data.comment_count != 0) {
-                        $("#comment_count").text(`${data.comment_count}`);
+                        $("#preview_comment_count").text(`${data.comment_count}`);
                     }
 
                     const popup_post_body = $('.popup-post-body');

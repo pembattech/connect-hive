@@ -59,6 +59,7 @@ class PostController extends Controller
         if (request()->ajax()) {
 
             $post['user_name'] = $post->user['name'];
+            $post['user_pp'] = $post->user['profile_picture'];
 
             // Add like count and comment count to the post data
             $post['like_count'] = $post->likes()->count();

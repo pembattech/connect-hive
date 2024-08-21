@@ -49,13 +49,38 @@
 
                                     @if (Auth()->user()->id != $user->id)
                                         <div>
-                                            <button data-user-id="{{ $user->id }}"
-                                                class="add-friend-button p-2 alice-blue flex items-center gap-2 text-blue font-medium text-lg rounded-lg w-full justify-center">
-                                                <p class="friendshipResponse-btn">
-                                                    {{ $user->friendshipStatus }}
-                                                </p>
-                                            </button>
+                                            @if ($user->friendshipStatus != 'response')
+                                                <button data-user-id="{{ $user->id }}"
+                                                    class="add-friend-button p-2 alice-blue flex items-center gap-2 text-blue font-medium text-lg rounded-lg w-full justify-center">
+                                                    <p class="friendshipResponse-btn">
+                                                        {{ $user->friendshipStatus }}
+                                                    </p>
+                                                </button>
+                                            @else
 
+                                                <div class="flex gap-4">
+                                                    <form action="{{ route('friendship.acceptPending') }}"
+                                                        method="POST">
+                                                        @csrf
+
+                                                        <input type="hidden" name="sender_id"
+                                                            value="{{ $user->id }}">
+                                                        <button
+                                                            class="accept_frndreq-btn w-full mt-2 mb-2 alice-blue text-blue font-sm text-lg p-2 rounded-lg">Accept</button>
+                                                    </form>
+
+                                                    <form action="{{ route('friendship.cancelPending') }}"
+                                                        method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="sender_id"
+                                                            value="{{ $user->id }}">
+
+                                                        <button
+                                                            class="cancel-button w-full mt-2 mb-2 text-white font-sm text-lg p-2 rounded-lg"
+                                                            id="cancel-button">Cancel</button>
+                                                    </form>
+                                                </div>
+                                            @endif
                                         </div>
                                     @endif
 
@@ -114,7 +139,6 @@
                         user_id: user_id
                     },
                     success: function(data) {
-                        console.log(data);
                         $button.text(data.message);
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
