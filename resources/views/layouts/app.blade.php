@@ -13,12 +13,14 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
     <link rel="shortcut icon" href="{{ asset('images/logo.png') }}" type="image/x-icon">
-
+    
     <!-- Scripts -->
-
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
-
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <link rel="stylesheet" href="{{ asset('build/assets/app-pGqqLXLo.css') }}">
+    <script src="{{ asset('build/assets/app-Cs0QkU1O.js') }}"></script>
+    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
 
 </head>
 
